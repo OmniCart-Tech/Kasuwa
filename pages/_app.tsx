@@ -9,8 +9,12 @@ import "../app/globals.css";
 
 function App({ Component, pageProps }: AppProps) {
   const [cartItems, setCartItems] = useState<any>([]);
+  const [savedItems, setSavedItems] = useState<any>([]);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [count, setCount] = useState(1);
+  const [notification, setNotification] = useState("");
+  const [notificationAction, setNotificationAction] = useState("");
+  const [notificationVisibles, setNotificationVisible] = useState(false);
   const [list, setList] = useState([]);
   const API_URL = "https://kasuwa-b671.onrender.com";
 
@@ -28,9 +32,35 @@ function App({ Component, pageProps }: AppProps) {
     FetchProducts();
   }, []);
 
+  const showNotification = (message: any) => {
+    setNotification(message);
+    setNotificationVisible(true);
+    setTimeout(() => {
+      setNotification("");
+      setNotificationVisible(false);
+    }, 3000);
+  };
+
   const addToCart = (product: any, count: number) => {
     const itemWithCount = { ...product, quantity: count };
     setCartItems([...cartItems, itemWithCount]);
+    showNotification(product.name);
+    setNotificationAction("added to cart");
+  };
+
+  const addToSavedItems = (product: any) => {
+    setSavedItems([...savedItems, product]);
+    showNotification(product.title);
+    setNotificationAction("added to saved items");
+  };
+
+  const removeFromSavedItems = (title: string, item: any) => {
+    const updatedSavedItems = savedItems.filter(
+      (savedItem: any) => savedItem !== item
+    );
+    setSavedItems(updatedSavedItems);
+    showNotification(title);
+    setNotificationAction("removed from saved items");
   };
 
   const removeFromCart = (title: string, cartItemIndex: number) => {
@@ -38,6 +68,22 @@ function App({ Component, pageProps }: AppProps) {
       (_cartItem: any, index: number) => index !== cartItemIndex
     );
     setCartItems(updatedCart);
+    showNotification(title);
+    setNotificationAction("removed from cart");
+  };
+
+  const increaseQuantity = (index: number) => {
+    const updatedCartItems = cartItems.map((item: any, i: any) =>
+      i === index ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCartItems(updatedCartItems);
+  };
+
+  const decreaseQuantity = (index: number) => {
+    const updatedCartItems = cartItems.map((item: any, i: any) =>
+      i === index ? { ...item, quantity: item.quantity - 1 } : item
+    );
+    setCartItems(updatedCartItems);
   };
 
   return (
@@ -52,6 +98,15 @@ function App({ Component, pageProps }: AppProps) {
         setIsNavOpen,
         count,
         setCount,
+        increaseQuantity,
+        decreaseQuantity,
+        savedItems,
+        setSavedItems,
+        addToSavedItems,
+        removeFromSavedItems,
+        showNotification,
+        setNotification,
+        setNotificationAction,
       }}
     >
       <Head>
