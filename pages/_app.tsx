@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import Footer from "@/components/footer";
 import { AppContext } from "@/utils/AppContext";
 import Head from "next/head";
+import Notification from "@/components/notification";
 import "../app/globals.css";
 
 function App({ Component, pageProps }: AppProps) {
@@ -21,10 +22,12 @@ function App({ Component, pageProps }: AppProps) {
   const [notificationVisibles, setNotificationVisible] = useState(false);
   const [list, setList] = useState([]);
   const API_URL = "https://kasuwa-b671.onrender.com";
-
+  // Function to save cart items to local storage
   const saveCartItems = (cartItems: any) => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
+
+  // Function to load cart items from local storage
   const loadCartItems = () => {
     const savedCartItems =
       typeof window !== "undefined"
@@ -32,9 +35,13 @@ function App({ Component, pageProps }: AppProps) {
         : false;
     return savedCartItems ? JSON.parse(savedCartItems) : [];
   };
+
+  // Function to save saved items to local storage
   const saveSavedItems = (savedItems: any) => {
     localStorage.setItem("savedItems", JSON.stringify(savedItems));
   };
+
+  // Function to load saved items from local storage
   const loadSavedItems = () => {
     const savedItems =
       typeof window !== "undefined"
@@ -44,7 +51,7 @@ function App({ Component, pageProps }: AppProps) {
   };
   const FetchProducts = async () => {
     try {
-      const allProduct = await fetch(API_URL + "/products");
+      const allProduct = await fetch(`${API_URL}/products`);
       const allProductRes = await allProduct.json();
       setList(allProductRes);
     } catch (error) {
@@ -60,17 +67,27 @@ function App({ Component, pageProps }: AppProps) {
     setTimeout(() => {
       setNotification("");
       setNotificationVisible(false);
-    }, 3000);
+    }, 3000); // Hide the notification after 3 seconds (adjust the duration as needed)
   };
 
   useEffect(() => {
+    // Load cart items and saved items from local storage on component mount
     const loadedCartItems = loadCartItems();
     const loadedSavedItems = loadSavedItems();
-    setCartItems((prevCartItems: any) => [...prevCartItems, ...loadedCartItems]);
-    setSavedItems((prevSavedItems: any) => [...prevSavedItems, ...loadedSavedItems]);
+
+    // Set the loaded items in state using the functional form of the state-setting functions
+    setCartItems((prevCartItems: any) => [
+      ...prevCartItems,
+      ...loadedCartItems,
+    ]);
+    setSavedItems((prevSavedItems: any) => [
+      ...prevSavedItems,
+      ...loadedSavedItems,
+    ]);
   }, []);
 
   useEffect(() => {
+    // Save cart items and saved items to local storage whenever they change
     saveCartItems(cartItems);
     saveSavedItems(savedItems);
   }, [cartItems, savedItems]);
@@ -86,6 +103,7 @@ function App({ Component, pageProps }: AppProps) {
     showNotification(product.title);
     setNotificationAction("added to saved items");
   };
+
   const removeFromSavedItems = (title: string, item: any) => {
     const updatedSavedItems = savedItems.filter(
       (savedItem: any) => savedItem !== item
@@ -94,6 +112,7 @@ function App({ Component, pageProps }: AppProps) {
     showNotification(title);
     setNotificationAction("removed from saved items");
   };
+
   const removeFromCart = (title: string, cartItemIndex: number) => {
     const updatedCart = cartItems.filter(
       (_cartItem: any, index: number) => index !== cartItemIndex
@@ -102,13 +121,16 @@ function App({ Component, pageProps }: AppProps) {
     showNotification(title);
     setNotificationAction("removed from cart");
   };
+
   const increaseQuantity = (index: number) => {
+    // Create a new array with the updated quantity for the specific item
     const updatedCartItems = cartItems.map((item: any, i: any) =>
       i === index ? { ...item, quantity: item.quantity + 1 } : item
     );
     setCartItems(updatedCartItems);
   };
   const decreaseQuantity = (index: number) => {
+    // Create a new array with the updated quantity for the specific item
     const updatedCartItems = cartItems.map((item: any, i: any) =>
       i === index ? { ...item, quantity: item.quantity - 1 } : item
     );
@@ -119,20 +141,42 @@ function App({ Component, pageProps }: AppProps) {
     <NextUIProvider>
       <AppContext.Provider
         value={{
-          cartItems, setCartItems, addToCart, list, removeFromCart,
-          isNavOpen, setIsNavOpen, count, setCount,
-          increaseQuantity, decreaseQuantity, savedItems, setSavedItems,
-          addToSavedItems, removeFromSavedItems, showNotification,
-          setNotification, setNotificationAction,
+          cartItems,
+          setCartItems,
+          addToCart,
+          list,
+          removeFromCart,
+          isNavOpen,
+          setIsNavOpen,
+          count,
+          setCount,
+          increaseQuantity,
+          decreaseQuantity,
+          savedItems,
+          setSavedItems,
+          addToSavedItems,
+          removeFromSavedItems,
+          showNotification,
+          setNotification,
+          setNotificationAction,
         }}
       >
         <Head>
+          {/* Define metadata for the app */}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>Kasuwa</title>
-          <link rel="icon" href="/icon.svg?<generated>" type="image/<generated>" sizes="<generated>" />
+          <link
+            rel="icon"
+            href="/icon.svg?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+          />
         </Head>
         {!router.pathname.includes("auth/") &&
           !router.pathname.includes("seller/sellerForm") && <Nav />}
+        {notificationVisibles && (
+          <Notification name={notification} action={notificationAction} />
+        )}
         <Component {...pageProps} />
         {!router.pathname.includes("auth/") && <Footer />}
       </AppContext.Provider>
