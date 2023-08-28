@@ -13,9 +13,11 @@
     "axios": "^1.5.1",
     "framer-motion": "^10.16.4",
     "next": "^13.5.4",
+    "paystack": "^2.0.1",
     "react": "latest",
     "react-dom": "latest",
-    "react-icons": "^4.11.0"
+    "react-icons": "^4.11.0",
+    "react-paystack": "^4.0.3"
   },
   "devDependencies": {
     "@types/node": "latest",
