@@ -15,6 +15,7 @@
     "@nextui-org/react": "^2.1.13",
     "axios": "^1.5.1",
     "framer-motion": "^10.16.4",
+    "million": "^2.6.4",
     "next": "^13.5.4",
     "paystack": "^2.0.1",
     "react": "latest",
