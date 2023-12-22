@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const API_BASE_URL = "https://kasuwa-b671.onrender.com/";
 
@@ -15,9 +16,14 @@ export default function SignUpForm() {
     e.preventDefault();
     setLoading("loading");
     try {
-      await axios.post(API_BASE_URL + "users/register", formData);
+      await axios.post(
+        `${API_BASE_URL}users/register`,
+        formData
+      );
+      // Signup successful
       router.push("/");
     } catch (error) {
+      // Handle signup error
       setLoading("failed");
     }
   };
@@ -43,7 +49,23 @@ export default function SignUpForm() {
     email: "",
     password: "",
     location: "",
+    phone: "",
   });
+
+  const [passwordToggle, setPasswordToggle] = useState<{
+    [key: string]: boolean;
+  }>({
+    password: false,
+    confirmPassword: false,
+  });
+
+  const handlePasswordToggle = (field: string) => {
+    setPasswordToggle((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+    // Toggle password visibility
+  };
 
   return (
     <div
@@ -64,49 +86,219 @@ export default function SignUpForm() {
       </div>
       <Card>
         <div className="bg-white px-6 py-4 rounded-xl">
-          <h2 className="text-center font-semibold text-2xl">Create an account</h2>
+          <h2 className="text-center font-semibold text-2xl">
+            Create an account
+          </h2>
           <hr className="bg-gray-400 w-full mt-4 " />
           <div className="my-4">
             <form className="w-full mt-5" onSubmit={handleSignUp}>
               <div className="mb-4">
                 <div className="flex flex-wrap -mx-4">
                   <div className="w-full md:w-1/2 px-4 mb-4 md:mb-0">
-                    <label htmlFor="first_name" className="block mb-2">First Name</label>
-                    <input id="first_name" name="firstName" type="text" value={formData.first_name}
-                      onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                      required aria-label="First Name"
-                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]" />
+                    <label htmlFor="first_name" className="block mb-2">
+                      First Name
+                    </label>
+                    <input
+                      id="first_name"
+                      name="firstName"
+                      type="text"
+                      value={formData.first_name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, first_name: e.target.value })
+                      }
+                      required
+                      aria-label="First Name"
+                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]"
+                    />
                   </div>
                   <div className="w-full md:w-1/2 px-4">
-                    <label htmlFor="last_name" className="block mb-2">Last Name</label>
-                    <input id="last_name" name="lastName" type="text" value={formData.last_name}
-                      onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                      required aria-label="Last Name"
-                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]" />
+                    <label htmlFor="last_name" className="block mb-2">
+                      Last Name
+                    </label>
+                    <input
+                      id="last_name"
+                      name="lastName"
+                      type="text"
+                      value={formData.last_name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, last_name: e.target.value })
+                      }
+                      required
+                      aria-label="Last Name"
+                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="flex flex-wrap -mx-4">
+                  <div className="w-full md:w-1/2 px-4 mb-4 md:mb-0">
+                    <label htmlFor="email" className="block mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]"
+                    />
+                  </div>
+                  <div className="w-full md:w-1/2 px-4">
+                    <label htmlFor="phone" className="block mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                      // required
+                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]"
+                    />
                   </div>
                 </div>
               </div>
               <div className="mb-4">
-                <label htmlFor="email" className="block mb-2">Email Address</label>
-                <input id="email" name="email" type="email" required value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]" />
+                <div className="flex flex-wrap -mx-4">
+                  <div className="w-full px-4 mb-4 md:mb-0">
+                    <label htmlFor="address" className="block mb-2">
+                      Address
+                    </label>
+                    <textarea
+                      id="address"
+                      name="address"
+                      required
+                      value={formData.location}
+                      onChange={(e) =>
+                        setFormData({ ...formData, location: e.target.value })
+                      }
+                      placeholder="Enter your full address"
+                      rows={3}
+                      className="border border-[#ccc] rounded-lg px-3 py-3 w-full focus:outline-none focus:border-[#A46E05] resize-none"
+                    />
+                  </div>
+                </div>
               </div>
+
               <div className="mb-4">
-                <label htmlFor="password" className="block mb-2">Password</label>
-                <input id="password" name="password" type="password" required value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]" />
+                <div className="flex flex-wrap -mx-4">
+                  <div className="w-full md:w-1/2 px-4 mb-4 md:mb-0">
+                    <label htmlFor="password" className="block mb-2">
+                      Password
+                    </label>
+                    <div className="border flex items-center justify-between border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05] relative">
+                      <input
+                        id="password"
+                        name="password"
+                        type={passwordToggle.password ? "text" : "password"}
+                        required
+                        value={formData.password}
+                        onChange={(e) =>
+                          setFormData({ ...formData, password: e.target.value })
+                        }
+                        className="rounded-lg px-3 w-[80%] focus:outline-none"
+                      />
+
+                      {passwordToggle.password ? (
+                        <FaEye
+                          onClick={() => handlePasswordToggle("password")}
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      ) : (
+                        <FaEyeSlash
+                          onClick={() => handlePasswordToggle("password")}
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      )}
+                      
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/2 px-4">
+                    <label htmlFor="confirmPassword" className="block mb-2">
+                      Confirm Password
+                    </label>
+                    <div className="border flex items-center justify-between border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05] relative">
+                      <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={
+                          passwordToggle.confirmPassword ? "text" : "password"
+                        }
+                        required
+                        className="rounded-lg px-3 w-[80%] focus:outline-none"
+                      />
+
+                      {passwordToggle.confirmPassword ? (
+                        <FaEye
+                          onClick={() =>
+                            handlePasswordToggle("confirmPassword")
+                          }
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      ) : (
+                        <FaEyeSlash
+                          onClick={() =>
+                            handlePasswordToggle("confirmPassword")
+                          }
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
+
               <Spacer y={2} />
-              <Button type="submit" className="bg-[#A46E05BD] text-white rounded-lg h-12 w-full">
+
+              <div className="text-end">
+                <Link href={"#"} className="text-[#38B419]">
+                  Forgot password?
+                </Link>
+              </div>
+
+              <Spacer y={2} />
+
+              <Button
+                type="submit"
+                className="bg-[#A46E05BD] text-white rounded-lg h-12 w-full"
+              >
                 {renderLoadingUI()}
               </Button>
             </form>
           </div>
+
           <Spacer y={2} />
+
           <div className="text-center mt-2 text-md">
-            <p>Have an account?<Link href={"/auth/signIn"} className="text-[#38B419]">{""} Login</Link></p>
+            <p>
+              By signing in, you agree to kasuwa’s{" "}
+              <span>
+                <Link href={"#"} className="font-bold">
+                  terms and conditions
+                </Link>
+              </span>{" "}
+              &{" "}
+              <span>
+                <Link href={"#"} className="font-bold">
+                  Privacy Policy.
+                </Link>
+              </span>
+            </p>
+            <p>
+              Have an account?
+              <Link href={"/auth/signIn"} className="text-[#38B419]">
+                {""} Login
+              </Link>
+            </p>
           </div>
           <Spacer y={16} />
         </div>
