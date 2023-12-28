@@ -21,3 +21,4 @@ export const saveCartItems = (cartItems:any) => {
     const savedItems =  typeof window !== "undefined" ? window.localStorage.getItem("savedItems"):false;
     return savedItems ? JSON.parse(savedItems) : [];
   };
+  
