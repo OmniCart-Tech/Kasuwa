@@ -29,6 +29,7 @@ import googleplay from "../public/google play.svg";
 import Footer from "@/components/footer";
 import SkeletonLoading from "@/components/skeletonLoading";
 import { title } from "process";
+
 interface card {
   images: any;
   index: number;
@@ -39,11 +40,58 @@ interface card {
 
 export default function Home() {
   const { cartItems, list, count } = useContext(AppContext);
-  const date = new Date();
-  const seconds = date.getSeconds();
-  const hours = date.getHours();
-  const days = date.getDay();
-  const minutes = date.getMinutes();
+  
+  // Countdown state
+  const [countdown, setCountdown] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  // Flash sale countdown state
+  const [flashSaleCountdown, setFlashSaleCountdown] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    // Set end time for main countdown (24 hours from now)
+    const endTime = new Date();
+    endTime.setHours(endTime.getHours() + 24);
+
+    // Set end time for flash sale (6 hours from now)
+    const flashSaleEndTime = new Date();
+    flashSaleEndTime.setHours(flashSaleEndTime.getHours() + 6);
+
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      
+      // Main countdown
+      const mainDistance = endTime.getTime() - now;
+      if (mainDistance > 0) {
+        setCountdown({
+          days: Math.floor(mainDistance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((mainDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((mainDistance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((mainDistance % (1000 * 60)) / 1000)
+        });
+      }
+
+      // Flash sale countdown
+      const flashDistance = flashSaleEndTime.getTime() - now;
+      if (flashDistance > 0) {
+        setFlashSaleCountdown({
+          hours: Math.floor(flashDistance / (1000 * 60 * 60)),
+          minutes: Math.floor((flashDistance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((flashDistance % (1000 * 60)) / 1000)
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="mx-auto flex flex-col w-full">
@@ -137,30 +185,29 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex gap-2 text-black flex-wrap sm:flex-nowrap">
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px]">
-                  <span suppressHydrationWarning className="font-semibold">
-                    {hours}
+                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                  <span suppressHydrationWarning className="font-bold text-lg">
+                    {countdown.days}
                   </span>
-                  <span className="text-[11px]">Hours</span>
+                  <span className="text-[11px] font-medium">Days</span>
                 </div>
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px]">
-                  <span suppressHydrationWarning className="font-semibold">
-                    {days}
+                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                  <span suppressHydrationWarning className="font-bold text-lg">
+                    {countdown.hours}
                   </span>
-                  <span className="text-[11px]">Days</span>
+                  <span className="text-[11px] font-medium">Hours</span>
                 </div>
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px]">
-                  <span suppressHydrationWarning className="font-semibold">
-                    {minutes}
+                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                  <span suppressHydrationWarning className="font-bold text-lg">
+                    {countdown.minutes}
                   </span>
-                  <span className="text-[11px]">Minutes</span>
+                  <span className="text-[11px] font-medium">Minutes</span>
                 </div>
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px]">
-                  <span suppressHydrationWarning className="font-semibold">
-                    {" "}
-                    {seconds}
+                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                  <span suppressHydrationWarning className="font-bold text-lg">
+                    {countdown.seconds}
                   </span>
-                  <span className="text-[11px]">Seconds</span>
+                  <span className="text-[11px] font-medium">Seconds</span>
                 </div>
               </div>
               <Button
@@ -238,13 +285,13 @@ export default function Home() {
             <p className="gap-2 flex">
               TimeLeft:
               <span suppressHydrationWarning className="font-semibold">
-                {hours}h
+                {flashSaleCountdown.hours}h
               </span>
               <span suppressHydrationWarning className="font-semibold">
-                {minutes}m
+                {flashSaleCountdown.minutes}m
               </span>
               <span suppressHydrationWarning className="font-semibold">
-                {seconds}s
+                {flashSaleCountdown.seconds}s
               </span>
             </p>
           </div>
