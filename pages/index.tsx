@@ -56,6 +56,10 @@ export default function Home() {
     seconds: 0
   });
 
+  // Check if countdown is urgent (less than 10 minutes)
+  const isCountdownUrgent = countdown.hours === 0 && countdown.minutes < 10;
+  const isFlashSaleUrgent = flashSaleCountdown.hours === 0 && flashSaleCountdown.minutes < 10;
+
   useEffect(() => {
     // Set end time for main countdown (24 hours from now)
     const endTime = new Date();
@@ -185,25 +189,25 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex gap-2 text-black flex-wrap sm:flex-nowrap">
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                <div className={`flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200 ${isCountdownUrgent ? 'animate-pulse bg-red-100' : ''}`}>
                   <span suppressHydrationWarning className="font-bold text-lg">
                     {countdown.days}
                   </span>
                   <span className="text-[11px] font-medium">Days</span>
                 </div>
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                <div className={`flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200 ${isCountdownUrgent ? 'animate-pulse bg-red-100' : ''}`}>
                   <span suppressHydrationWarning className="font-bold text-lg">
                     {countdown.hours}
                   </span>
                   <span className="text-[11px] font-medium">Hours</span>
                 </div>
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                <div className={`flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200 ${isCountdownUrgent ? 'animate-pulse bg-red-100' : ''}`}>
                   <span suppressHydrationWarning className="font-bold text-lg">
                     {countdown.minutes}
                   </span>
                   <span className="text-[11px] font-medium">Minutes</span>
                 </div>
-                <div className="flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200">
+                <div className={`flex flex-col justify-center items-center bg-white rounded-full w-[52px] h-[52px] pb-[6px] leading-[16px] shadow-lg hover:scale-105 transition-transform duration-200 ${isCountdownUrgent ? 'animate-pulse bg-red-100' : ''}`}>
                   <span suppressHydrationWarning className="font-bold text-lg">
                     {countdown.seconds}
                   </span>
