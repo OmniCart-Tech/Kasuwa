@@ -60,6 +60,10 @@ export default function Home() {
   const isCountdownUrgent = countdown.hours === 0 && countdown.minutes < 10;
   const isFlashSaleUrgent = flashSaleCountdown.hours === 0 && flashSaleCountdown.minutes < 10;
 
+  // Countdown completion states
+  const [isMainCountdownComplete, setIsMainCountdownComplete] = useState(false);
+  const [isFlashSaleComplete, setIsFlashSaleComplete] = useState(false);
+
   useEffect(() => {
     // Set end time for main countdown (24 hours from now)
     const endTime = new Date();
@@ -81,6 +85,9 @@ export default function Home() {
           minutes: Math.floor((mainDistance % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((mainDistance % (1000 * 60)) / 1000)
         });
+        setIsMainCountdownComplete(false);
+      } else {
+        setIsMainCountdownComplete(true);
       }
 
       // Flash sale countdown
@@ -91,6 +98,9 @@ export default function Home() {
           minutes: Math.floor((flashDistance % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((flashDistance % (1000 * 60)) / 1000)
         });
+        setIsFlashSaleComplete(false);
+      } else {
+        setIsFlashSaleComplete(true);
       }
     }, 1000);
 
@@ -222,6 +232,11 @@ export default function Home() {
                   }}
                 ></div>
               </div>
+              {isMainCountdownComplete && (
+                <div className="mt-3 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md text-center">
+                  <span className="font-semibold">🎉 Countdown Complete! Special offer has ended.</span>
+                </div>
+              )}
               <Button
                 radius="sm"
                 className="bg-[#38B419] w-[100px] py-3 px-6  text-xs text-white"
