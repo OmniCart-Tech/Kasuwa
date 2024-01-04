@@ -80,6 +80,24 @@ export default function Home() {
     window.location.reload();
   };
 
+  // Play countdown sound effect
+  const playCountdownSound = () => {
+    if (typeof window !== 'undefined' && 'AudioContext' in window) {
+      const audioContext = new (window as any).AudioContext();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.1);
+    }
+  };
+
   useEffect(() => {
     // Set end time for main countdown (24 hours from now)
     const endTime = new Date();
@@ -102,6 +120,11 @@ export default function Home() {
           seconds: Math.floor((mainDistance % (1000 * 60)) / 1000)
         });
         setIsMainCountdownComplete(false);
+        
+        // Play sound when countdown becomes urgent
+        if (mainDistance <= 600000 && mainDistance > 599000) { // Last 10 minutes
+          playCountdownSound();
+        }
       } else {
         setIsMainCountdownComplete(true);
       }
