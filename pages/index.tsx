@@ -294,17 +294,21 @@ export default function Home() {
             <span className=" whitespace-nowrap">Flash Sales</span>
           </div>
           <div className="text-2xl flex justify-center items-center scroll-element">
-            <p className="gap-2 flex">
-              TimeLeft:
-              <span suppressHydrationWarning className="font-semibold">
-                {flashSaleCountdown.hours}h
-              </span>
-              <span suppressHydrationWarning className="font-semibold">
-                {flashSaleCountdown.minutes}m
-              </span>
-              <span suppressHydrationWarning className="font-semibold">
-                {flashSaleCountdown.seconds}s
-              </span>
+            <p className="gap-2 flex items-center">
+              <span className="text-sm font-medium">Time Left:</span>
+              <div className={`flex gap-1 px-3 py-1 rounded-lg ${isFlashSaleUrgent ? 'bg-red-500 animate-pulse' : 'bg-[#38B419]'}`}>
+                <span suppressHydrationWarning className="font-bold text-white">
+                  {flashSaleCountdown.hours.toString().padStart(2, '0')}
+                </span>
+                <span className="text-white">:</span>
+                <span suppressHydrationWarning className="font-bold text-white">
+                  {flashSaleCountdown.minutes.toString().padStart(2, '0')}
+                </span>
+                <span className="text-white">:</span>
+                <span suppressHydrationWarning className="font-bold text-white">
+                  {flashSaleCountdown.seconds.toString().padStart(2, '0')}
+                </span>
+              </div>
             </p>
           </div>
 
