@@ -64,6 +64,22 @@ export default function Home() {
   const [isMainCountdownComplete, setIsMainCountdownComplete] = useState(false);
   const [isFlashSaleComplete, setIsFlashSaleComplete] = useState(false);
 
+  // Countdown reset function
+  const resetCountdown = () => {
+    const newEndTime = new Date();
+    newEndTime.setHours(newEndTime.getHours() + 24);
+    
+    const newFlashSaleEndTime = new Date();
+    newFlashSaleEndTime.setHours(newFlashSaleEndTime.getHours() + 6);
+    
+    // Reset completion states
+    setIsMainCountdownComplete(false);
+    setIsFlashSaleComplete(false);
+    
+    // Force re-render by updating end times
+    window.location.reload();
+  };
+
   useEffect(() => {
     // Set end time for main countdown (24 hours from now)
     const endTime = new Date();
@@ -243,6 +259,15 @@ export default function Home() {
               >
                 Buy Now!
               </Button>
+              {isMainCountdownComplete && (
+                <Button
+                  radius="sm"
+                  className="bg-[#FF6B35] w-[100px] py-3 px-6 text-xs text-white mt-2"
+                  onClick={resetCountdown}
+                >
+                  Reset Timer
+                </Button>
+              )}
             </div>
           </div>
         </div>
