@@ -98,14 +98,55 @@ export default function Home() {
     }
   };
 
+  // Save countdown end times to localStorage
+  const saveCountdownTimes = (mainEndTime: Date, flashEndTime: Date) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mainCountdownEnd', mainEndTime.getTime().toString());
+      localStorage.setItem('flashSaleEnd', flashEndTime.getTime().toString());
+    }
+  };
+
+  // Load countdown end times from localStorage
+  const loadCountdownTimes = () => {
+    if (typeof window !== 'undefined') {
+      const mainEnd = localStorage.getItem('mainCountdownEnd');
+      const flashEnd = localStorage.getItem('flashSaleEnd');
+      
+      if (mainEnd && flashEnd) {
+        return {
+          mainEndTime: new Date(parseInt(mainEnd)),
+          flashEndTime: new Date(parseInt(flashEnd))
+        };
+      }
+    }
+    return null;
+  };
+
   useEffect(() => {
+    // Try to load existing countdown times from localStorage
+    const savedTimes = loadCountdownTimes();
+    
     // Set end time for main countdown (24 hours from now)
-    const endTime = new Date();
+    let endTime = new Date();
     endTime.setHours(endTime.getHours() + 24);
 
     // Set end time for flash sale (6 hours from now)
-    const flashSaleEndTime = new Date();
+    let flashSaleEndTime = new Date();
     flashSaleEndTime.setHours(flashSaleEndTime.getHours() + 6);
+
+    // Use saved times if they exist and are in the future
+    if (savedTimes) {
+      const now = new Date().getTime();
+      if (savedTimes.mainEndTime.getTime() > now) {
+        endTime = savedTimes.mainEndTime;
+      }
+      if (savedTimes.flashEndTime.getTime() > now) {
+        flashSaleEndTime = savedTimes.flashEndTime;
+      }
+    }
+
+    // Save the current end times
+    saveCountdownTimes(endTime, flashSaleEndTime);
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
