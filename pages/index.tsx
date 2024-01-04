@@ -214,6 +214,14 @@ export default function Home() {
                   <span className="text-[11px] font-medium">Seconds</span>
                 </div>
               </div>
+              <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
+                <div 
+                  className="bg-[#38B419] h-2 rounded-full transition-all duration-1000 ease-out"
+                  style={{
+                    width: `${Math.max(0, Math.min(100, ((24 * 60 * 60 - (countdown.hours * 60 * 60 + countdown.minutes * 60 + countdown.seconds)) / (24 * 60 * 60)) * 100))}%`
+                  }}
+                ></div>
+              </div>
               <Button
                 radius="sm"
                 className="bg-[#38B419] w-[100px] py-3 px-6  text-xs text-white"
