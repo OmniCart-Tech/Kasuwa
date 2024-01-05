@@ -64,6 +64,10 @@ export default function Home() {
   const [isMainCountdownComplete, setIsMainCountdownComplete] = useState(false);
   const [isFlashSaleComplete, setIsFlashSaleComplete] = useState(false);
 
+  // Countdown pause/resume state
+  const [isPaused, setIsPaused] = useState(false);
+  const [pausedTime, setPausedTime] = useState(0);
+
   // Countdown reset function
   const resetCountdown = () => {
     const newEndTime = new Date();
@@ -78,6 +82,18 @@ export default function Home() {
     
     // Force re-render by updating end times
     window.location.reload();
+  };
+
+  // Pause countdown
+  const pauseCountdown = () => {
+    setIsPaused(true);
+    setPausedTime(Date.now());
+  };
+
+  // Resume countdown
+  const resumeCountdown = () => {
+    setIsPaused(false);
+    setPausedTime(0);
   };
 
   // Play countdown sound effect
@@ -323,15 +339,34 @@ export default function Home() {
               >
                 Buy Now!
               </Button>
-              {isMainCountdownComplete && (
-                <Button
-                  radius="sm"
-                  className="bg-[#FF6B35] w-[100px] py-3 px-6 text-xs text-white mt-2"
-                  onClick={resetCountdown}
-                >
-                  Reset Timer
-                </Button>
-              )}
+              <div className="flex gap-2 mt-2">
+                {!isPaused ? (
+                  <Button
+                    radius="sm"
+                    className="bg-[#FFA500] w-[100px] py-3 px-6 text-xs text-white"
+                    onClick={pauseCountdown}
+                  >
+                    Pause
+                  </Button>
+                ) : (
+                  <Button
+                    radius="sm"
+                    className="bg-[#4CAF50] w-[100px] py-3 px-6 text-xs text-white"
+                    onClick={resumeCountdown}
+                  >
+                    Resume
+                  </Button>
+                )}
+                {isMainCountdownComplete && (
+                  <Button
+                    radius="sm"
+                    className="bg-[#FF6B35] w-[100px] py-3 px-6 text-xs text-white"
+                    onClick={resetCountdown}
+                  >
+                    Reset Timer
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
