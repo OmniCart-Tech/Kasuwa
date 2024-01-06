@@ -68,6 +68,11 @@ export default function Home() {
   const [isPaused, setIsPaused] = useState(false);
   const [pausedTime, setPausedTime] = useState(0);
 
+  // Countdown settings state
+  const [showSettings, setShowSettings] = useState(false);
+  const [countdownDuration, setCountdownDuration] = useState(24); // hours
+  const [flashSaleDuration, setFlashSaleDuration] = useState(6); // hours
+
   // Countdown reset function
   const resetCountdown = () => {
     const newEndTime = new Date();
@@ -357,6 +362,13 @@ export default function Home() {
                     Resume
                   </Button>
                 )}
+                <Button
+                  radius="sm"
+                  className="bg-[#9C27B0] w-[100px] py-3 px-6 text-xs text-white"
+                  onClick={() => setShowSettings(!showSettings)}
+                >
+                  Settings
+                </Button>
                 {isMainCountdownComplete && (
                   <Button
                     radius="sm"
@@ -367,6 +379,39 @@ export default function Home() {
                   </Button>
                 )}
               </div>
+              {showSettings && (
+                <div className="mt-3 p-4 bg-gray-50 border border-gray-200 rounded-md">
+                  <h3 className="font-semibold mb-3 text-gray-700">Countdown Settings</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
+                        Main Countdown Duration (hours)
+                      </label>
+                      <Input
+                        type="number"
+                        defaultValue={countdownDuration.toString()}
+                        onChange={(e) => setCountdownDuration(parseInt(e.target.value) || 24)}
+                        min="1"
+                        max="168"
+                        className="w-32"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
+                        Flash Sale Duration (hours)
+                      </label>
+                      <Input
+                        type="number"
+                        defaultValue={flashSaleDuration.toString()}
+                        onChange={(e) => setFlashSaleDuration(parseInt(e.target.value) || 6)}
+                        min="1"
+                        max="24"
+                        className="w-32"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
