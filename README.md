@@ -117,6 +117,9 @@ Prisma Documentation
 Vercel Deployment Guide
 
 
+🌐 Community
+Join our community on Discord to connect with other contributors, ask questions, and stay updated on Kasuwa's development.
+
 📄 License
 Kasuwa is open source and licensed under the MIT License.
 
