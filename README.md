@@ -1,107 +1,124 @@
-# 🌾 Kasuwa — Open Source eFarm Marketplace
+🌾 Kasuwa — Open Source eFarm Marketplace
+Kasuwa is an open-source eFarm web platform designed to empower farm owners to sell their agricultural products directly to farmers, vendors, and everyday users, fostering fresh produce accessibility and supporting local agriculture through digital innovation.
+Built with Next.js, Kasuwa leverages modern web technologies to create a seamless and scalable marketplace.
 
-**Kasuwa** is an open-source eFarm web platform that empowers **farm owners** to sell their agricultural products, while enabling **farmers**, **vendors**, and **everyday users** to buy fresh produce directly from the source.
+🚀 Features
 
-Built with [Next.js](https://nextjs.org/), Kasuwa aims to improve food accessibility and support local agriculture through digital innovation.
+🧑‍🌾 Farm Owner Dashboard: List, manage, and update agricultural products with ease.
+🛒 Product Marketplace: Browse and purchase fresh produce directly from farmers.
+🔍 Search & Filtering: Advanced product search with category and location-based filtering.
+🧾 Secure Checkout: Integrated payment and order processing system (in development).
+🌍 Local & National Sales: Support for regional and nationwide product distribution.
+📱 Responsive Design: Optimized for mobile, tablet, and desktop devices.
 
----
 
-## 🚀 Features
+🛠️ Tech Stack
 
-- 🧑‍🌾 Farm owner dashboard to list and manage products
-- 🛒 Product marketplace for buyers and farmers
-- 🔍 Product search and category filtering
-- 🧾 Secure checkout and order system *(coming soon)*
-- 🌍 Support for both local and national sales
+Framework: Next.js 14 (App Router)
+Styling: Tailwind CSS for rapid, responsive design
+Backend: Next.js API Routes for server-side logic
+Database: PostgreSQL (planned, with Prisma ORM integration)
+Authentication: NextAuth.js (planned for secure user management)
+Deployment: Vercel for seamless hosting
+Other Tools: ESLint, Prettier, Husky (for code quality)
 
----
 
-## 🛠️ Tech Stack
+🧑‍💻 Getting Started
+Follow these steps to set up and run Kasuwa locally:
+Prerequisites
 
-- **Framework**: [Next.js 14](https://nextjs.org/)
-- **Styling**: Tailwind CSS
-- **Backend**: App Router & API Routes
-- **Database**: Coming soon (PostgreSQL or MongoDB)
-- **Deployment**: Vercel
+Node.js (v18 or higher)
+npm or Yarn
+Git
 
----
+Installation
 
-## 🧑‍💻 Getting Started
+Clone the Repository
+git clone https://github.com/your-username/kasuwa.git
+cd kasuwa
 
-To run the project locally:
 
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/your-username/kasuwa.git
-   cd kasuwa
-````
+Install Dependencies
+npm install
+# or
+yarn install
 
-2. **Install dependencies**
 
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+Set Up Environment VariablesCreate a .env.local file in the root directory and add the following:
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+# Add database or other environment variables here (e.g., DATABASE_URL)
 
-3. **Run the development server**
 
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+Run the Development Server
+npm run dev
+# or
+yarn dev
 
-4. **Open your browser**
-   Visit [http://localhost:3000](http://localhost:3000) to explore the app.
 
----
+Open the ApplicationNavigate to http://localhost:3000 in your browser to explore Kasuwa.
 
-## 📁 Project Structure
 
-```bash
-/
-├── app/              # Main application logic
-├── components/       # Reusable UI components
-├── public/           # Static assets
-├── styles/           # Tailwind & global CSS
-└── README.md         # Project documentation
-```
 
----
+📁 Project Structure
+kasuwa/
+├── app/                    # Next.js App Router (pages, API routes)
+├── components/             # Reusable React components
+├── lib/                   # Utility functions and helpers
+├── public/                # Static assets (images, fonts, etc.)
+├── styles/                # Tailwind CSS and global styles
+├── .env.local             # Environment variables (not tracked)
+├── prisma/                # Prisma schema (planned for database)
+├── README.md              # Project documentation
+└── package.json           # Project dependencies and scripts
 
-## 📚 Learn More
 
-* [Next.js Documentation](https://nextjs.org/docs)
-* [Tailwind CSS Docs](https://tailwindcss.com/docs)
-* [Deploy to Vercel](https://vercel.com/new)
+⚙️ Database Setup (Coming Soon)
+Kasuwa will use PostgreSQL with Prisma ORM for database management. To set up the database:
 
----
+Install PostgreSQL locally or use a cloud provider (e.g., Supabase, Neon).
+Update the .env.local file with your DATABASE_URL.
+Run migrations (once implemented):npx prisma migrate dev
 
-## 🤝 Contributing
 
-We welcome contributions! Whether it's bug fixes, new features, or documentation improvements, you're welcome to submit a pull request.
 
-1. Fork the repo
-2. Create a feature branch
-3. Commit your changes
-4. Open a PR
+Stay tuned for detailed database setup instructions in future updates.
 
----
+🤝 Contributing
+We welcome contributions from the community! To contribute:
 
-## 📄 License
+Fork the RepositoryFork the project on GitHub and clone your fork locally.
+git clone https://github.com/your-username/kasuwa.git
 
-This project is open source and available under the [MIT License](LICENSE).
 
----
+Create a Feature Branch
+git checkout -b feature/your-feature-name
 
-## 👨‍🌾 Built with ❤️ for farmers
 
-By the **Kasuwa** team.
+Commit ChangesFollow conventional commit messages (e.g., feat: add product filtering).
+git commit -m "feat: add product filtering"
 
-```
 
----
+Push and Open a Pull RequestPush your branch to your fork and open a PR against the main repository.
 
-Let me know if you want to include database setup, env variables, or contributor guidelines!
-```
+
+Contributor Guidelines
+
+Follow the Code of Conduct (to be added).
+Ensure code is formatted with Prettier and linted with ESLint.
+Write clear, concise commit messages.
+Test your changes locally before submitting a PR.
+
+
+📚 Learn More
+
+Next.js Documentation
+Tailwind CSS Documentation
+Prisma Documentation
+Vercel Deployment Guide
+
+
+📄 License
+Kasuwa is open source and licensed under the MIT License.
+
+👨‍🌾 Built with ❤️ for Farmers
+By the Kasuwa team. Let's grow the future of agriculture together!
