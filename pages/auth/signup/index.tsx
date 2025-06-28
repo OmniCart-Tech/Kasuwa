@@ -5,10 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const API_BASE_URL = "https://kasuwa-b671.onrender.com/";
 
-export default function SignUpForm(){
+export default function SignUpForm() {
   const [loading, setLoading] = useState("idle");
   const router = useRouter();
   const handleSignUp = async (e: { preventDefault: () => void }) => {
@@ -41,7 +42,7 @@ export default function SignUpForm(){
     }
     return null;
   };
-  
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -49,6 +50,21 @@ export default function SignUpForm(){
     password: "",
     location: "",
   });
+
+  const [passwordToggle, setPasswordToggle] = useState<{
+    [key: string]: boolean;
+  }>({
+    password: false,
+    confirmPassword: false,
+  });
+
+  const handlePasswordToggle = (field: string) => {
+    setPasswordToggle((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+    console.log("Clicked");
+  };
 
   return (
     <div
@@ -166,29 +182,64 @@ export default function SignUpForm(){
                     <label htmlFor="password" className="block mb-2">
                       Password
                     </label>
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                      value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
-                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]"
-                    />
+                    <div className="border flex items-center justify-between border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05] relative">
+                      <input
+                        id="password"
+                        name="password"
+                        type={passwordToggle.password ? "text" : "password"}
+                        required
+                        value={formData.password}
+                        onChange={(e) =>
+                          setFormData({ ...formData, password: e.target.value })
+                        }
+                        className="rounded-lg f px-3 w-[80%] focus:outline-none"
+                      />
+
+                      {passwordToggle.password ? (
+                        <FaEye
+                          onClick={() => handlePasswordToggle("password")}
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      ) : (
+                        <FaEyeSlash
+                          onClick={() => handlePasswordToggle("password")}
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      )}
+                      
+                    </div>
                   </div>
                   <div className="w-full md:w-1/2 px-4">
                     <label htmlFor="confirmPassword" className="block mb-2">
                       Confirm Password
                     </label>
-                    <input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      required
-                      className="border border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05]"
-                    />
+                    <div className="border flex items-center justify-between border-[#ccc] rounded-lg h-12 px-3 w-full focus:outline-none focus:border-[#A46E05] relative">
+                      <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={
+                          passwordToggle.confirmPassword ? "text" : "password"
+                        }
+                        required
+                        className="rounded-lg f px-3 w-[80%] focus:outline-none"
+                      />
+
+                      {passwordToggle.confirmPassword ? (
+                        <FaEye
+                          onClick={() =>
+                            handlePasswordToggle("confirmPassword")
+                          }
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      ) : (
+                        <FaEyeSlash
+                          onClick={() =>
+                            handlePasswordToggle("confirmPassword")
+                          }
+                          className="text-gray-400 cursor-pointer"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -241,6 +292,4 @@ export default function SignUpForm(){
       </Card>
     </div>
   );
-};
-
-
+}
