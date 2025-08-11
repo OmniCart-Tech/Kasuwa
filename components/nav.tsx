@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // Import React and useState
+import React, { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -39,35 +39,45 @@ import logout from "../public/logout copy.svg";
 import ProductCard from "./productCard";
 
 export default function Nav() {
-  const [isDropdownOpen, setDropdownOpen] = useState(false); // Use state to control the dropdown
-  const [searchQuery, setSearchQuery] = useState(""); // Step 1: Create a state variable for the search query
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const router = useRouter();
-  const { cartItems, list, setIsNavOpen, isNavOpen, savedItems, count } =
-    useContext(AppContext);
-  const userDetails =
-    typeof window !== "undefined" ? window.localStorage.getItem("user") : false;
+  const { cartItems, list, setIsNavOpen, isNavOpen, savedItems, count } = useContext(AppContext);
+  const userDetails = typeof window !== "undefined" ? window.localStorage.getItem("user") : false;
   const user = JSON.parse(userDetails as string);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const farmerDetails =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("farmer")
-      : false;
+  const farmerDetails = typeof window !== "undefined" ? window.localStorage.getItem("farmer") : false;
   const farmer = JSON.parse(farmerDetails as string);
+
   const filteredList = list.filter((item: any) => {
-    return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory ? item.category === selectedCategory : true;
+    return matchesCategory && matchesSearch;
   });
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category === selectedCategory ? null : category);
+    setSearchQuery(category === selectedCategory ? "" : category);
+  };
+
   const handleSearchChange = (event: any) => {
-    // Step 2: Event handler to capture the search query
     setSearchQuery(event.target.value);
   };
 
+  const categoryList = [
+    { id: 1, name: "Fruits", category: "Fruits" },
+    { id: 2, name: "Dairy", category: "Dairy" },
+    { id: 3, name: "Vegetables", category: "Vegetables" },
+    { id: 4, name: "Grains", category: "Grains" },
+    { id: 5, name: "Tubers", category: "Tubers" },
+    { id: 6, name: "Fertilizers", category: "Fertilizers" },
+  ];
+
   const handleDropdownClick = () => {
     if (!user) {
-      // If no user is logged in, redirect to the Sign In page
       router.push("/auth/signIn");
     } else {
-      // If a user is logged in, toggle the dropdown
       setDropdownOpen(!isDropdownOpen);
     }
   };
@@ -101,7 +111,7 @@ export default function Nav() {
         >
           <Input
             startContent={<SearchIcon />}
-            className="text-black  w-full m-auto border border-[#A46E05] rounded-[7px] bg-white cursor-pointer"
+            className="text-black w-full m-auto border border-[#A46E05] rounded-[7px] bg-white cursor-pointer"
             radius="md"
             style={{
               paddingTop: "7px",
@@ -184,12 +194,12 @@ export default function Nav() {
               className={`${farmer && "nav-no-space"} p-0 flex lg:hidden`}
             >
               <div>
-                { !farmer ? (
+                {!farmer ? (
                   <div className="flex gap-[6px] justify-start items-center">
                     <Button
                       as={Link}
                       href="/seller/sellerForm"
-                      className="bg-[green] rounded-md  py-[6px] text-white px-3 w-full"
+                      className="bg-[green] rounded-md py-[6px] text-white px-3 w-full"
                     >
                       Become a seller
                     </Button>
@@ -209,12 +219,12 @@ export default function Nav() {
               className={`${farmer && "nav-no-space"} p-0 flex `}
             >
               <div>
-                { !farmer && (
+                {!farmer && (
                   <div className="flex gap-[6px] justify-start items-center">
                     <Button
                       as={Link}
                       href="/seller/sellerLogin"
-                      className="bg-[green] rounded-md  py-[6px] text-white px-3 w-full"
+                      className="bg-[green] rounded-md py-[6px] text-white px-3 w-full"
                     >
                       Sign In as a seller
                     </Button>
@@ -234,7 +244,7 @@ export default function Nav() {
                     <Link className="text-black" href="/account">
                       My Account
                     </Link>
-                  </span>{" "}
+                  </span>
                 </div>
               )}
             </DropdownItem>
@@ -256,7 +266,7 @@ export default function Nav() {
             </DropdownItem>
             <DropdownItem
               variant="flat"
-              className=" py-2 w-full"
+              className="py-2 w-full"
               key="saved items"
             >
               <div className="flex gap-2 justify-start items-center">
@@ -272,7 +282,6 @@ export default function Nav() {
                   <Image src={savedIcon} alt="logo" width={19} height={20} />
                 )}
                 <span>
-                  {" "}
                   <Link className="text-black" href={"/savedItems"}>
                     Saved Items
                   </Link>
@@ -281,7 +290,7 @@ export default function Nav() {
             </DropdownItem>
             <DropdownItem
               variant="flat"
-              className="myDropItem flex md:hidden   py-1"
+              className="myDropItem flex md:hidden py-1"
             >
               <div className="flex gap-2 justify-start items-center">
                 {cartItems?.length > 0 ? (
@@ -295,15 +304,13 @@ export default function Nav() {
                 ) : (
                   <Image src={cart} alt="logo" width={21} height={20} />
                 )}
-
                 <span>
                   <Link className="text-black" href={"/cart"}>
                     Cart
                   </Link>
                 </span>
               </div>
-            </DropdownItem>          
-            
+            </DropdownItem>
             <DropdownItem
               onClick={() => {
                 localStorage.removeItem("user");
@@ -317,7 +324,7 @@ export default function Nav() {
               {user && (
                 <div className="flex gap-1 justify-start items-center">
                   <Image src={logout} alt="logo" width={21} height={20} />
-                  <span>Logout</span>{" "}
+                  <span>Logout</span>
                 </div>
               )}
             </DropdownItem>
@@ -352,27 +359,27 @@ export default function Nav() {
         </div>
       </NavbarItem>
       <NavbarItem className="hidden md:flex">
-      <div>
-                {!farmer ? (
-                  <div className="flex gap-[6px] justify-start items-center">
-                    <Button
-                      as={Link}
-                      href="/seller/sellerForm"
-                      className="bg-[green] rounded-md  py-[6px] text-white px-3 w-full"
-                    >
-                      Become a seller
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex gap-[6px] justify-start items-center">
-                    <Link className="text-black" href="/seller/dashboard">
-                      <Button className="bg-[green] rounded-md px-3 py-[6px] text-white hidden md:flex">
-                        seller dashboard
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
+        <div>
+          {!farmer ? (
+            <div className="flex gap-[6px] justify-start items-center">
+              <Button
+                as={Link}
+                href="/seller/sellerForm"
+                className="bg-[green] rounded-md py-[6px] text-white px-3 w-full"
+              >
+                Become a seller
+              </Button>
+            </div>
+          ) : (
+            <div className="flex gap-[6px] justify-start items-center">
+              <Link className="text-black" href="/seller/dashboard">
+                <Button className="bg-[green] rounded-md px-3 py-[6px] text-white hidden md:flex">
+                  seller dashboard
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
       </NavbarItem>
 
       <Modal
@@ -380,7 +387,7 @@ export default function Nav() {
         onOpenChange={onOpenChange}
         placement="top"
         backdrop="blur"
-        className="h-screen max-h-[unset] w-[95%] md:max-h-[60vh] "
+        className="h-screen max-h-[unset] w-[95%] md:max-h-[60vh]"
         size={"3xl"}
         scrollBehavior="inside"
       >
@@ -399,32 +406,65 @@ export default function Nav() {
                 />
               </ModalHeader>
               <ModalBody>
-                <div className=" grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))]  w-full gap-x-[1.50rem] gap-y-4 pt-10 max-w-[1280px] px-6 py-10 mx-auto ">
-                  {filteredList.map(
-                    (
-                      items: {
-                        images: any;
-                        originalPrice: string;
-                        saleScale: string;
-                        name: string;
-                        _id: string;
-                        stock: string;
-                      },
-                      index: number
-                    ) => (
-                      <ProductCard
-                        _id={items._id}
-                        item={items}
-                        key={index}
-                        src={items.images[0].url}
-                        index={index}
-                        originalPrice={items.originalPrice}
-                        title={items.name}
-                        count={count}
-                        stock={items.stock}
-                      />
-                    )
-                  )}
+                <div className="w-full flex justify-between items-center">
+                  <div className="flex flex-col gap-3 w-full">
+                    <div className="grid grid-cols-4 gap-4 px-6 w-full">
+                      {categoryList.map((item: any) => (
+                        <div key={item.id}>
+                          <button
+                            className={`w-28 py-3 rounded-lg backdrop-blur-md text-black relative
+                              ${
+                                selectedCategory === item.category
+                                  ? item.id % 2 === 0
+                                    ? "bg-green-500/40"
+                                    : item.id === 5
+                                    ? "bg-yellow-500/20"
+                                    : item.id === 6
+                                    ? "bg-green-500/20"
+                                    : "bg-yellow-500/50"
+                                  : "bg-gray-200"
+                              }`}
+                            onClick={() => handleCategoryChange(item.category)}
+                          >
+                            {item.name}
+                            {selectedCategory === item.category && (
+                              <span className="absolute right-2 top-1/2 -translate-y-1/2">
+                                ✓
+                              </span>
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] w-full gap-x-[1.50rem] gap-y-4 pt-10 max-w-[1280px] px-6 py-5 mx-auto">
+                      {filteredList.map(
+                        (
+                          items: {
+                            images: any;
+                            originalPrice: string;
+                            saleScale: string;
+                            name: string;
+                            _id: string;
+                            stock: string;
+                          },
+                          index: number
+                        ) => (
+                          <ProductCard
+                            _id={items._id}
+                            item={items}
+                            key={index}
+                            src={items.images[0].url}
+                            index={index}
+                            originalPrice={items.originalPrice}
+                            title={items.name}
+                            count={count}
+                            stock={items.stock}
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
                 </div>
                 {filteredList.length <= 0 && (
                   <div className="flex justify-center items-center w-full">
