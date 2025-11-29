@@ -2,18 +2,11 @@ import {
   Button,
   Input,
   extendVariants,
-  Select,
-  SelectItem,
-  Checkbox,
-  cn,
-  Navbar,
 } from "@nextui-org/react";
-import { useState, useReducer, useEffect } from "react";
-import CheckIcon from "@/components/checkIcon";
+import { useReducer } from "react";
 import { MailIcon } from "@/components/mailIcon";
 import { useRouter } from "next/router";
 import "../../../app/form style.css";
-import axios from "axios";
 
 const API_URL = "https://kasuwa-b671.onrender.com";
 
@@ -47,11 +40,6 @@ export const MyInput = extendVariants(Input, {
   },
 });
 export default function SellerLogin() {
-  const [hasReadContract, setHasReadContract] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [contractError, setContractError] = useState("");
-
   const router = useRouter();
   const [form, setForm] = useReducer(reducer, {
     password: "",
@@ -78,7 +66,6 @@ export default function SellerLogin() {
         email: form.email,
         password: form.password,
       };
-      console.log(farmerDetails);
       const CONFIG = {
         method: "POST",
         body: JSON.stringify(farmerDetails),
@@ -89,14 +76,13 @@ export default function SellerLogin() {
       if (form.password) {
         const signup = await fetch(`${API_URL}/farmers/farmerLogin`, CONFIG);
         const signupRes = await signup.json();
-        console.log(signupRes);
         if (signupRes.success) {
           localStorage.setItem("farmer", JSON.stringify(signupRes.data))
           router.push("/seller/dashboard");
         }
       } 
     } catch (error) {
-      console.log(error);
+      // Error handled silently
     }
   };
 
@@ -173,10 +159,6 @@ export default function SellerLogin() {
                   }}
                 />
               </div>
-
-              {passwordError && (
-                <div className="text-red-500">{passwordError}</div>
-              )}
              
               <div className="w-full mx-auto max-w-[600px] py-5 flex px-6">
                 <Button

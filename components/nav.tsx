@@ -7,7 +7,6 @@ import {
   NavbarItem,
   Button,
   DropdownTrigger,
-  Avatar,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -17,16 +16,13 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   useDisclosure,
   Link,
 } from "@nextui-org/react";
 import Image from "next/image";
 import logo from "../public/logo.svg";
-import categories from "../public/categories.svg";
 import cart from "../public/cart.svg";
 import account from "../public/account.svg";
-import setting from "../public/setting-2.svg";
 import SearchIcon from "./searchIcon";
 import Account from "../public/acount-2.svg";
 import drop from "../public/drop.svg";
@@ -41,7 +37,7 @@ import ProductCard from "./productCard";
 export default function Nav() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const router = useRouter();
   const { cartItems, list, setIsNavOpen, isNavOpen, savedItems, count } = useContext(AppContext);
   const userDetails = typeof window !== "undefined" ? window.localStorage.getItem("user") : false;
@@ -392,7 +388,7 @@ export default function Nav() {
         scrollBehavior="inside"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <Input

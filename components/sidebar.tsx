@@ -11,7 +11,8 @@ import { useContext } from "react";
 import { AppContext } from "@/utils/AppContext";
 import { Button } from "@nextui-org/react";
 export default function Sidebar() {
-  const{isNavOpen,setIsNavOpen}=useContext(AppContext)
+  const context = useContext(AppContext);
+  const isNavOpen = context?.isNavOpen ?? false;
 
   const router = useRouter();
   const pathname = router.pathname;

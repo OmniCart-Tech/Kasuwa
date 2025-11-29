@@ -1,9 +1,8 @@
 
 "use client";
 
-import { Button, Card, Input, Spacer } from "@nextui-org/react";
+import { Card, Spacer } from "@nextui-org/react";
 import React from "react";
-import Footer from "@/components/footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faCheck, faWallet } from "@fortawesome/free-solid-svg-icons";
 

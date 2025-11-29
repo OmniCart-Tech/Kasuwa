@@ -11,35 +11,15 @@ import nairabag from "../public/sack-of-naira-removebg-preview 1.svg";
 import Image from "next/image";
 import {
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Input,
-  Skeleton,
 } from "@nextui-org/react";
 import { useEffect, useState, useContext } from "react";
 import { AppContext } from "@/utils/AppContext";
 import ProductCard from "@/components/productCard";
 import Flash from "../public/flash.svg";
-import logo from "../public/logo.svg";
-import { MailIcon } from "@/components/mailIcon";
-import ioslogo from "../public/ios store.svg";
-import googleplay from "../public/google play.svg";
-import Footer from "@/components/footer";
 import SkeletonLoading from "@/components/skeletonLoading";
-import { title } from "process";
-
-interface card {
-  images: any;
-  index: number;
-  originalPrice: string;
-  saleScale: string;
-  title: string;
-}
 
 export default function Home() {
-  const { cartItems, list, count } = useContext(AppContext);
+  const { list, count } = useContext(AppContext);
   
   // Countdown state
   const [countdown, setCountdown] = useState({
@@ -62,44 +42,6 @@ export default function Home() {
 
   // Countdown completion states
   const [isMainCountdownComplete, setIsMainCountdownComplete] = useState(false);
-  const [isFlashSaleComplete, setIsFlashSaleComplete] = useState(false);
-
-  // Countdown pause/resume state
-  const [isPaused, setIsPaused] = useState(false);
-  const [pausedTime, setPausedTime] = useState(0);
-
-  // Countdown settings state
-  const [showSettings, setShowSettings] = useState(false);
-  const [countdownDuration, setCountdownDuration] = useState(24); // hours
-  const [flashSaleDuration, setFlashSaleDuration] = useState(6); // hours
-
-  // Countdown reset function
-  const resetCountdown = () => {
-    const newEndTime = new Date();
-    newEndTime.setHours(newEndTime.getHours() + 24);
-    
-    const newFlashSaleEndTime = new Date();
-    newFlashSaleEndTime.setHours(newFlashSaleEndTime.getHours() + 6);
-    
-    // Reset completion states
-    setIsMainCountdownComplete(false);
-    setIsFlashSaleComplete(false);
-    
-    // Force re-render by updating end times
-    window.location.reload();
-  };
-
-  // Pause countdown
-  const pauseCountdown = () => {
-    setIsPaused(true);
-    setPausedTime(Date.now());
-  };
-
-  // Resume countdown
-  const resumeCountdown = () => {
-    setIsPaused(false);
-    setPausedTime(0);
-  };
 
   // Play countdown sound effect
   const playCountdownSound = () => {
@@ -199,9 +141,6 @@ export default function Home() {
           minutes: Math.floor((flashDistance % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((flashDistance % (1000 * 60)) / 1000)
         });
-        setIsFlashSaleComplete(false);
-      } else {
-        setIsFlashSaleComplete(true);
       }
     }, 1000);
 

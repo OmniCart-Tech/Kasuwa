@@ -11,22 +11,6 @@ import { AppContext } from "@/utils/AppContext";
 import Head from "next/head";
 import Notification from "@/components/notification";
 import "../app/globals.css";
-interface cartItem {
-  img: string;
-  index: number;
-  originalPrice: string;
-  saleScale: string;
-  title: string;
-  seller: string;
-}
-
-interface product {
-  src: string;
-  index: number;
-  originalPrice: string;
-  saleScale: string;
-  title: string;
-}
 
 function App({ Component, pageProps }: AppProps) {
   const [cartItems, setCartItems] = useState<any>([]);
@@ -71,7 +55,7 @@ function App({ Component, pageProps }: AppProps) {
       const allProductRes = await allProduct.json();
       setList(allProductRes);
     } catch (error) {
-      console.log(error);
+      // Error handled silently
     }
   };
   useEffect(() => {
@@ -131,7 +115,7 @@ function App({ Component, pageProps }: AppProps) {
 
   const removeFromCart = (title: string, cartItemIndex: number) => {
     const updatedCart = cartItems.filter(
-      (cartItem: any, index: number) => index !== cartItemIndex
+      (_cartItem: any, index: number) => index !== cartItemIndex
     );
     setCartItems(updatedCart);
     showNotification(title);

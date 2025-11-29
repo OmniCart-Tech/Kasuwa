@@ -21,14 +21,10 @@ export default function SignInForm (){
     setLoading("loading");
     try {
       const response = await axios.post(`${API_BASE_URL}users/login`, formData);
-      console.log("Signin successful", response.data.data);
       const userDetails=response.data.data
       localStorage.setItem("user",JSON.stringify(userDetails))
       router.back();
-      
-      console.log(response);
     } catch (error) {
-      console.log("Signin error", error);
       setLoading("failed");
     }
   };

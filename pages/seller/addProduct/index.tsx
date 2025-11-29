@@ -9,8 +9,7 @@ import {
   Textarea,
   Spinner,
 } from "@nextui-org/react";
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import Footer from "@/components/footer";
+import React, { useContext, useReducer, useState, useEffect } from "react";
 import bag from "public/bag.svg";
 import Image from "next/image";
 import Sidebar from "@/components/sidebar";
@@ -60,7 +59,20 @@ export default function AddProduct() {
     productCategory: "",
     subCategory: "",
   });
-  const { setNotificationAction, showNotification } = useContext(AppContext);
+  const context = useContext(AppContext);
+  const setNotificationAction = context?.setNotificationAction;
+  const showNotification = context?.showNotification;
+  
+  // Ensure this only renders on client side
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  if (!isMounted) {
+    return null;
+  }
 
   const Loader = () => {
     if (loading === "idle") {
@@ -75,6 +87,7 @@ export default function AddProduct() {
     } else if (loading === "failed") {
       return <p>retry</p>;
     }
+    return null;
   };
 
   //reducer function for handling state changes for form
@@ -174,12 +187,11 @@ export default function AddProduct() {
       }
       if (addProductRes.status === 409) {
         setProductExists(true);
-        setLoading("failed");
-      }
-    } catch (error) {
-      console.log(error);
       setLoading("failed");
     }
+  } catch (error) {
+    setLoading("failed");
+  }
   };
   // const deleteId=async()=>{
   //   try{

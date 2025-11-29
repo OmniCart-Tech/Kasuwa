@@ -5,15 +5,11 @@ import {
   Select,
   SelectItem,
   Checkbox,
-  cn,
-  Navbar,
 } from "@nextui-org/react";
-import { useState, useReducer, useEffect } from "react";
-import CheckIcon from "@/components/checkIcon";
+import { useState, useReducer } from "react";
 import { MailIcon } from "@/components/mailIcon";
 import { useRouter } from "next/router";
 import "../../../app/form style.css";
-import axios from "axios";
 import Link from "next/link";
 
 const API_URL = "https://kasuwa-b671.onrender.com";
@@ -95,7 +91,6 @@ const states = [
 export default function SellerForm() {
   const [hasReadContract, setHasReadContract] = useState(false);
   const [passwordError, setPasswordError] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [contractError, setContractError] = useState("");
 
   const router = useRouter();
@@ -148,7 +143,6 @@ export default function SellerForm() {
         shop_name: form.shopName,
         password: form.password,
       };
-      console.log(farmerDetails);
       const CONFIG = {
         method: "POST",
         body: JSON.stringify(farmerDetails),
@@ -159,7 +153,6 @@ export default function SellerForm() {
       if (form.password === form.retypepassword && hasReadContract === true) {
         const signup = await fetch(`${API_URL}/farmers/farmerRegister`, CONFIG);
         const signupRes = await signup.json();
-        console.log(signupRes);
         if (signupRes.success) {
           router.push("/seller/dashboard");
         }
@@ -177,7 +170,7 @@ export default function SellerForm() {
         }
       }
     } catch (error) {
-      console.log(error);
+      // Error handled silently
     }
   };
 

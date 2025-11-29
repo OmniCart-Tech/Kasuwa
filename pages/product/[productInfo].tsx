@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useCallback } from "react";
 import { AppContext } from "@/utils/AppContext";
-import { Button, Image, Skeleton } from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import SkeletonLoading from "@/components/skeletonLoading"; // Import the skeleton loading component
 import Bookmark from "@/components/bookmark";
 import ProductCard from "@/components/productCard";
 import ProductSkeletonLoader from "@/components/ProductSkeletonLoader";
@@ -23,7 +22,7 @@ export default function ProductInformation() {
   const { productInfo } = router.query;
   const { addToCart, list, count } = useContext(AppContext);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     const API_URL = "https://kasuwa-b671.onrender.com";
     try {
       const productData = await fetch(
@@ -33,16 +32,15 @@ export default function ProductInformation() {
       setProduct(productDataRes);
       setIsLoading(false); // Set isLoading to false after data is fetched
     } catch (error) {
-      console.log(error);
       setIsLoading(false); // Set isLoading to false on error
     }
-  };
-  console.log(product);
+  }, [productInfo]);
+
   useEffect(() => {
     if (router.isReady) {
       fetchProducts();
     }
-  }, [productInfo,router.isReady]);
+  }, [productInfo, router.isReady, fetchProducts]);
 
   const checkStock = () => {
     if (product) {

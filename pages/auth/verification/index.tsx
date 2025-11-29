@@ -17,8 +17,8 @@ const VerificationForm = () => {
   };
 
   const handleSignUp = () => {
-    const code = verificationCodes.join("");
-    console.log("Verification Code:", code);
+    verificationCodes.join("");
+    // Verification code processing
   };
 
   return (

@@ -1,4 +1,4 @@
-import { Button, Card, Input, Spacer } from "@nextui-org/react";
+import { Card, Spacer } from "@nextui-org/react";
 import React from "react";
 import Footer from "@/components/footer";
 import star from "public/star.svg";

@@ -1,7 +1,6 @@
 "use client"
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { AppContext } from "@/utils/AppContext";
-import cart from "/public/cart.svg";
 import {
   Image,
   Button,
@@ -15,7 +14,6 @@ import {
 } from "@nextui-org/react";
 import ProductCard from "@/components/productCard";
 import Cartitem from "@/components/cartItem";
-import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/router";
 
 import SkeletonLoading from "@/components/skeletonLoading";
@@ -47,8 +45,8 @@ export default function Cart() {
   const amount = (total + DeliveryFee) * 100;
   const reference = `order_${Math.floor(Math.random() * 1000000) + 1}`; // Generate a unique reference for each transaction
 
-  const onSuccess = (reference: any) => {
-    console.log(reference);
+  const onSuccess = () => {
+    // Payment successful
   };
 
   const config = {

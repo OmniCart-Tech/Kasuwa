@@ -1,5 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Skeleton } from "@nextui-org/react";
-import Bookmark from "./bookmark";
+import { Card, CardBody, CardFooter, CardHeader, Skeleton } from "@nextui-org/react";
 
 export default function SkeletonLoading() {
   function Skeletons() {

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import bookmark from "../public/bookmark.svg";
 import isBookmarked from "../public/bookmark copy.svg";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { AppContext } from "@/utils/AppContext";
 
 export default function Bookmark({ title, item }: any) {

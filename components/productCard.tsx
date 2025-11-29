@@ -9,7 +9,6 @@ import {
 } from "@nextui-org/react";
 import { useState, useContext } from "react";
 import { AppContext } from "@/utils/AppContext";
-import cart from "../public/cart.svg";
 
 interface card {
   _id: string;
